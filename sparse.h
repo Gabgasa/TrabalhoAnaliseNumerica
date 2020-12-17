@@ -14,6 +14,7 @@ public:
 
 	~Sparse();
 
+
 	// sets value for matrix at M[l][c]
 	// please dont set a value to zero, why would you do this? What's the point of using this structure?
 	void setValue(int l, int c, double val);
@@ -41,6 +42,9 @@ private:
 	* pair where int means the column of the matrix and the double means the value
 	* 
 	*/
+
 	std::vector<std::vector<std::pair<int, double>>> matrix;
+
+	std::vector<std::vector<std::pair<int, double>>> getMatrix();
 	
 };

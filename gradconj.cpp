@@ -99,18 +99,15 @@ void PreCond(int n, Sparse A, Sparse *M, double w){
 		Dinv.setValue(i,i, 1.0/A.getValue(i,i));
 		U.setValue(i,i, D.getValue(i,i));
 		for(int j = 0; j < i; j++){
-			if(A.getValue(i,j) == 0.0){
-				break;
+			if(A.getValue(i,j) == 0){
+				continue;
 			}
 			L.setValue(i,j, A.getValue(i,j) * w);
 			U.setValue(j,i, A.getValue(j,i) * w);
 		}
-	}
-    
-    
+	}   
 
-    
-    
+	//L.print();
 	L.multSMM(n, Dinv, Aux);
 	//I + wL*Dinv
 	for(int i = 0; i<n; i++){
@@ -150,27 +147,6 @@ void substituicoes(int n, Sparse *A, double* b, double* z, double*d) {
 	}
 }
 
-void cholesky(int n, Sparse *A)
-{
-	for (int k = 0; k < n; k++)
-	{
-		A->setValue(k,k, sqrt(A->getValue(k,k)));		
-
-		for (int i = k + 1; i < n; i++)
-		{
-			A->setValue(k,i, A->getValue(i,k)/A->getValue(k,k));
-		}
-
-		for (int i = k + 1; i < n; i++)
-		{
-			for (int j = k + 1; j <= i; j++)
-			{
-				A->setValue(i,j, A->getValue(i,j) - A->getValue(i, k) * A->getValue(j,k));
-			}
-		}
-	}
-}
-
 int GradConjSparse (int n, Sparse A, double* b, double* x, double tol, double w)
 {
 	int count;
@@ -178,7 +154,7 @@ int GradConjSparse (int n, Sparse A, double* b, double* x, double tol, double w)
 	double *d,*z,*zk, *Ax, *rk, *r, *r_, *b_, *auxVet;
     Sparse *M = new Sparse(n);
     Sparse *auxMat = new Sparse(n);
-	Sparse auxM;
+
     
 	z = criavet(n);
 	zk = criavet(n);
@@ -199,9 +175,11 @@ int GradConjSparse (int n, Sparse A, double* b, double* x, double tol, double w)
 	}
 	PreCond(n, A, M, w);
 	
-	cholesky(n, M);
+	//cholesky(n, M);
+	//M->print();
 	substituicoes(n, M, r, d, z);
-	//mostraResposta(n, z);
+	//printf("A ");
+	//mostraResposta(n, r);
 	
 
 	for (int k = 0;k < n;k++)

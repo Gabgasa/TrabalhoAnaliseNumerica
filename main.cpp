@@ -78,14 +78,14 @@ int main(void)
 	constroiMatriz(n3, Mat3, b3);
 	constroiMatriz(n4, Mat4, b4);
     
-
+	
 	printf("----------- N = 100 -----------\n");
     printf("Gradientes conjugados sem pre-condicionador \n");
 	gettimeofday(&start, NULL);
     printf("Vezes: %d\n",GradConj(n1, *Mat1, b1, x1, pow(10, -5)));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
-    //mostraResposta(n1, x1);
+    mostraResposta(n1, x1);
 	zeraResposta(n1, x1);
 	    
     printf("Gradientes conjugados com pre-condicionador (w = 1.0)\n");
@@ -93,9 +93,10 @@ int main(void)
 	printf("Vezes: %d\n",GradConjSparse(n1, *Mat1, b1, x1, pow(10, -5), 1.0));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
+	mostraResposta(n1, x1);
 	zeraResposta(n1, x1);
 	//imprimevec(n, x, "%f");
-    //mostraResposta(n1, x1);
+
 
 	printf("Gradientes conjugados com pre-condicionador (w = 1.1)\n");
 	gettimeofday(&start, NULL);
@@ -118,22 +119,19 @@ int main(void)
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
 	zeraResposta(n2, x2);
-    //mostraResposta(n2, x2);
 
 	printf("Gradientes conjugados com pre-condicionador  (w = 1.1)\n");
 	gettimeofday(&start, NULL);
 	printf("Vezes: %d\n",GradConjSparse(n2, *Mat2, b2, x2, pow(10, -5), 1.1));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
-    //mostraResposta(n2, x2);
-
+	
 	printf("----------- N = 10000 -----------\n");
     printf("Gradientes conjugados sem pre-condicionador \n");
 	gettimeofday(&start, NULL);
     printf("Vezes: %d\n",GradConj(n3, *Mat3, b3, x3, pow(10, -5)));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
-    //mostraResposta(n3, x3);
 	zeraResposta(n3, x3);
 	    
     printf("Gradientes conjugados com pre-condicionador  (w = 1.0)\n");
@@ -142,14 +140,12 @@ int main(void)
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
 	zeraResposta(n3, x3);
-    //mostraResposta(n3, x3);
 
 	printf("Gradientes conjugados com pre-condicionador  (w = 1.1)\n");
 	gettimeofday(&start, NULL);
 	printf("Vezes: %d\n",GradConjSparse(n3, *Mat3, b3, x3, pow(10, -5), 1.1));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
-    //mostraResposta(n3, x3);
 
 	printf("----------- N = 100000 -----------\n");
     printf("Gradientes conjugados sem pre-condicionador \n");
@@ -157,7 +153,6 @@ int main(void)
     printf("Vezes: %d\n",GradConj(n4, *Mat4, b4, x4, pow(10, -5)));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
-    //mostraResposta(n1, x1);
 	zeraResposta(n4, x4);
 	    
     printf("Gradientes conjugados com pre-condicionador  (w = 1.0)\n");
@@ -165,14 +160,15 @@ int main(void)
 	printf("Vezes: %d\n",GradConjSparse(n4, *Mat4, b4, x4, pow(10, -5), 1.0));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
+	//mostraResposta(n4, x4);
 	zeraResposta(n4, x4);
-    //mostraResposta(n4, x1);
 
 	printf("Gradientes conjugados com pre-condicionador  (w = 1.1)\n");
 	gettimeofday(&start, NULL);
 	printf("Vezes: %d\n",GradConjSparse(n4, *Mat4, b4, x4, pow(10, -5), 1.1));
 	gettimeofday(&stop, NULL);
 	printf("Tempo (s): %.2f\n\n", timedifference_msec(start,stop)/1000);
+	//mostraResposta(n4, x4);
     
     
     

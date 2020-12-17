@@ -1,5 +1,3 @@
-#pragma once
-
 #include "sparse.h"
 #include <sstream>
 #include <iostream>
@@ -22,12 +20,16 @@ Sparse::~Sparse()
 {
 }
 
+std::vector<std::vector<std::pair<int, double>>> Sparse::getMatrix(){
+	return matrix;
+}
 
 
 void Sparse::setValue(int l, int c, double val)
 {
     for (int col = 0; col < matrix[l].size(); col++)
     {
+		
         if (c == matrix[l][col].first)
         {
             if (val == 0)
@@ -87,12 +89,31 @@ void Sparse::multSMV(int n, double* vec, double* w)
 void Sparse::multSMM(int q, Sparse B, Sparse *C) {
 	int m = matrix.size();
 	int n = B.size();
+	
+	std::vector<std::vector<std::pair<int, double>>> matrixB = B.getMatrix();
 
+	// for (int i = 0; i < m; i++) {
+	// 	for (int k = 0; k < q; k++) {
+	// 		for (int j = 0; j < n; j++) {
+	// 			C->setValue(i, k, C->getValue(i, k) + getValue(i, j) * B.getValue(j, k));
+	// 		}
+	// 	}
 
+	// }
+
+	//Selecionando i linha de A
 	for (int i = 0; i < m; i++) {
-		for (int k = 0; k < q; k++) {
-			for (int j = 0; j < n; j++) {
-				C->setValue(i, k, C->getValue(i, k) + getValue(i, j) * B.getValue(j, k));
+
+		//Coluna de A
+		for(int j = 0; j < matrix[i].size(); j++){
+			int colunaA = matrix[i][j].first;
+			
+			//Coluna de B
+			for(int k = 0; k < matrixB[i].size(); k++){
+				int colunaB = matrixB[colunaA][k].first;
+				//printf("col %d ", colunaB);
+				C->setValue(i, colunaB, C->getValue(i, colunaB) + getValue(i, colunaA) * B.getValue(colunaA, colunaB));
+
 			}
 		}
 
@@ -110,7 +131,7 @@ void Sparse::print()
 	{
 		for (int j = 0; j < matrix.size(); j++)
 		{
-			std::cout << std::setw(4) << getValue(i, j) << " ";
+			std::cout << std::setw(10) << getValue(i, j) << " ";
 		}
 		std::cout << std::endl;
 	}
