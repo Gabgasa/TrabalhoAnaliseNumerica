@@ -32,6 +32,7 @@ int GradConj (int n, Sparse A, double* b, double* x, double tol)
 		r[i]=b[i]-Ax[i];
 		d[i]=b[i]-Ax[i];
 	}
+
 	count = 0;
 	for(int k=0;k<n;k++)
 	{
@@ -149,13 +150,35 @@ void substituicoes(int n, Sparse *A, double* b, double* z, double*d) {
 	}
 }
 
-int GradConjSparse (int n, Sparse A, double* b, double* x, double tol)
+void cholesky(int n, Sparse *A)
+{
+	for (int k = 0; k < n; k++)
+	{
+		A->setValue(k,k, sqrt(A->getValue(k,k)));		
+
+		for (int i = k + 1; i < n; i++)
+		{
+			A->setValue(k,i, A->getValue(i,k)/A->getValue(k,k));
+		}
+
+		for (int i = k + 1; i < n; i++)
+		{
+			for (int j = k + 1; j <= i; j++)
+			{
+				A->setValue(i,j, A->getValue(i,j) - A->getValue(i, k) * A->getValue(j,k));
+			}
+		}
+	}
+}
+
+int GradConjSparse (int n, Sparse A, double* b, double* x, double tol, double w)
 {
 	int count;
 	double aux = 0, alpha = 0, beta;
 	double *d,*z,*zk, *Ax, *rk, *r, *r_, *b_, *auxVet;
     Sparse *M = new Sparse(n);
     Sparse *auxMat = new Sparse(n);
+	Sparse auxM;
     
 	z = criavet(n);
 	zk = criavet(n);
@@ -174,9 +197,9 @@ int GradConjSparse (int n, Sparse A, double* b, double* x, double tol)
 	{
 		r[i] = b[i] - Ax[i];
 	}
-	PreCond(n, A, M, 0.0);
+	PreCond(n, A, M, w);
 	
-	// Mz = r -> Retro-substituição
+	cholesky(n, M);
 	substituicoes(n, M, r, d, z);
 	//mostraResposta(n, z);
 	
